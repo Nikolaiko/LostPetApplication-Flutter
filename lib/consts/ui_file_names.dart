@@ -1,0 +1,1 @@
+const String logo_file_name = "images/app_logo.svg";
