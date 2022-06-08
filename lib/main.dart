@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lost_pets_app/auth/auth_initial_flow.dart';
 import 'package:lost_pets_app/auth/view/auth_view.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(       
         primarySwatch: Colors.blue,
       ),
-      home: const AuthView(),
+      home: const AuthInitialFlow(),
     );
   }
 }
