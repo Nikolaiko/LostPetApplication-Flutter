@@ -58,13 +58,19 @@ class _AuthViewSelectorState extends State<AuthViewSelector> {
       children: [
         Expanded(
           child: TextButton(
-            onPressed: () => state.toggleScreenType(), 
+            onPressed: () {
+              state.toggleScreenType();
+              FocusManager.instance.primaryFocus?.unfocus();
+            }, 
             child: loginButton
           )
         ),
         Expanded(
           child: TextButton(
-            onPressed: () => state.toggleScreenType(), 
+            onPressed: () {
+              state.toggleScreenType();
+              FocusManager.instance.primaryFocus?.unfocus();
+            }, 
             child: registerButton
           )
         )

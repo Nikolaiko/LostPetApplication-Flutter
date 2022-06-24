@@ -17,3 +17,5 @@ const Color validationWhite = Color(0xFFFFFFFF);
 
 const Color authTextFieldLabelColor = Color(0xFFB3B3B3);
 const Color authTextFieldShadow = Color(0x14000000);
+
+const Color redValidation = Color(0xFFD81852);

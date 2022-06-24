@@ -7,11 +7,15 @@ class AuthTextField extends StatelessWidget {
   final String _hintText;
   final StringCallback _changeCallback;
   final bool _obscureText;
+  final String _errorText;
+  final bool _isError;
 
   const AuthTextField(
     this._hintText,
     this._changeCallback,
     this._obscureText,
+    this._errorText,
+    this._isError,
     {Key? key}    
   ) : super(key: key);
 
@@ -22,13 +26,16 @@ class AuthTextField extends StatelessWidget {
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide.none
-          ),          
+            borderSide: _isError ? failedBorder : BorderSide.none
+          ),                    
           fillColor: Colors.white,
           filled: true,
           hintText: _hintText,
-          hintStyle: authTextFieldHintStyle,      
+          hintStyle: authTextFieldHintStyle,
+          errorText: _errorText,
+          errorStyle: failedTextStyle   
         ),
+        obscureText: _obscureText,
         style: authTextFieldStyle,
         onChanged: _changeCallback,
       ),  

@@ -11,7 +11,9 @@ import 'package:lost_pets_app/consts/ui/ui_fonts_consts.dart';
 import 'package:provider/provider.dart';
 
 class AuthView extends StatefulWidget {
-  const AuthView({ Key? key }) : super(key: key);
+  const AuthView(
+    { Key? key }
+  ) : super(key: key);
 
   @override
   State<AuthView> createState() => _AuthViewState();
@@ -21,6 +23,7 @@ class _AuthViewState extends State<AuthView> {
   @override
   Widget build(BuildContext context) {    
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(        
         children: [
           const Padding(
@@ -28,32 +31,34 @@ class _AuthViewState extends State<AuthView> {
             child: LogoView(),            
           ),
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,          
-              children: [
-                Consumer<AuthScreenState>(
-                  builder: (context, value, child) {
-                    return Column(
-                      children: [
-                        const Padding(
-                          padding: authSelectorPaddings,
-                          child: AuthViewSelector(),
-                        ),
-                        Padding(
-                          padding: authLoginWidgetPaddings,
-                          child: value.screenType == AuthScreenType.login
-                            ? AuthLoginForm((_){}, (_){}, (){})
-                            : const AuthRegistrationForm()
-                        )
-                      ]
-                    );
-                  }
-                ),                               
-                TextButton(
-                  onPressed: (){},
-                  child: const Text(laterLoginTitle, style: forgotPasswordButtonStyle)
-                )
-              ]
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,          
+                children: [
+                  Consumer<AuthScreenState>(
+                    builder: (context, value, child) {
+                      return Column(
+                        children: [
+                          const Padding(
+                            padding: authSelectorPaddings,
+                            child: AuthViewSelector(),
+                          ),
+                          Padding(
+                            padding: authLoginWidgetPaddings,
+                            child: value.screenType == AuthScreenType.login
+                              ? AuthLoginForm(value)
+                              : AuthRegistrationForm(value)
+                          )
+                        ]
+                      );
+                    }
+                  ),                               
+                  TextButton(
+                    onPressed: (){},
+                    child: const Text(laterLoginTitle, style: forgotPasswordButtonStyle)
+                  )
+                ]
+              ),
             ),
           )
         ]

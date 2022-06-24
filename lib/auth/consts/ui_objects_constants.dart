@@ -33,6 +33,7 @@ const Widget loginButton = Text(
 );
 
 const Duration switchAnimationDuration = Duration(milliseconds: 100);
+
 const BoxDecoration authFieldDecoration = BoxDecoration(
   boxShadow: [
     BoxShadow(
@@ -44,3 +45,11 @@ const BoxDecoration authFieldDecoration = BoxDecoration(
   ]
 );
 
+const BorderSide failedBorder = BorderSide(width: 2.0, color: redValidation);
+
+const TextStyle failedTextStyle = TextStyle(
+  fontFamily: fontFamilyName,
+  fontSize: 12,
+  fontWeight: FontWeight.w400,
+  color: redValidation
+);
