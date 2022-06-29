@@ -1,0 +1,341 @@
+---
+openapi: 3.0.0
+info:
+  title: Pet Project API
+  description: This is a Pet Project API specifications for backend.
+  contact:
+    email: nbaklanov@issart.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/nbaklanov-issart/PetProjectAPI/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://pets.project.issart.com/api/1.0.0
+  description: Server Address
+tags:
+- name: tech
+  description: Tech endpoints to check/debug backend communication
+- name: auth
+  description: Operations for authorization and autentification
+- name: announcements
+  description: Operations with announcements
+paths:
+  /tech/healthcheck:
+    get:
+      tags:
+      - tech
+      summary: check backend avialibility
+      description: send request to check if server respond at all
+      operationId: healthcheck
+      responses:
+        "200":
+          description: Everythin is OK
+        "500":
+          description: Something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /login/email:
+    post:
+      tags:
+      - auth
+      summary: user login via email
+      description: Send login data, to authorize user in system
+      operationId: emailLogin
+      requestBody:
+        description: User login parameters in JSON
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+      responses:
+        "200":
+          description: Token pair. Access token for auth requests. Refresh token - to refresh access token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokens'
+        "404":
+          description: User with this creds not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "422":
+          description: Wrong JSON format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "415":
+          description: Unsupported Media Type, or empty body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "500":
+          description: Any other internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /register/email:
+    post:
+      tags:
+      - auth
+      summary: user register via email
+      description: Send login data, to register user in system
+      operationId: emailRegister
+      requestBody:
+        description: User register parameters in JSON
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailRegister'
+      responses:
+        "200":
+          description: Token pair. Access token for auth requests. Refresh token - to refresh access token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginTokens'
+        "409":
+          description: User with this creds already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "422":
+          description: Wrong JSON format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "415":
+          description: Unsupported Media Type, or empty body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "500":
+          description: Any other internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /announcements:
+    get:
+      tags:
+      - announcements
+      summary: Get all announcements
+      description: Get all announcements or sorting by type
+      operationId: getAnnouncements
+      parameters:
+      - name: petType
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/PetTypes'
+      responses:
+        "200":
+          description: List of announcements. Maybe empty.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnouncementsList'
+        "422":
+          description: Wrong parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "415":
+          description: Unsupported Media Type, or empty body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "500":
+          description: Any other internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - announcements
+      requestBody:
+        description: JSON with new announcement
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewLossAnnouncement'
+      responses:
+        "200":
+          description: Succsessfull.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnouncementsList'
+        "422":
+          description: JSON error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "401":
+          description: Unautharized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "415":
+          description: Unsupported Media Type, or empty body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "500":
+          description: Any other internal error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    UserEmailLogin:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: somemail@mail.ru
+        password:
+          type: string
+          example: uWrty345
+    UserEmailRegister:
+      required:
+      - email
+      - password
+      - userName
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: somemail@mail.ru
+        password:
+          type: string
+          example: uWrty345
+        userName:
+          type: string
+          example: myUsername
+    NewLossAnnouncement:
+      required:
+      - description
+      - geoPosition
+      - imageUrl
+      - petType
+      - title
+      type: object
+      properties:
+        petType:
+          $ref: '#/components/schemas/PetTypes'
+        imageUrl:
+          type: string
+          format: url
+          example: https://firebasestorage.googleapis.com/v0/b/lost-pets-e8cae.appspot.com/o/IMG_4A981326FDC2-1.jpeg
+        title:
+          type: string
+          example: Strange pet here!
+        description:
+          type: string
+          example: I found a pet in here it's black hungry and angry.
+        geoPosition:
+          $ref: '#/components/schemas/GeoPosition'
+    UserLoginTokens:
+      required:
+      - accessToken
+      - refreshToken
+      type: object
+      properties:
+        accessToken:
+          type: string
+          format: uuid
+        refreshToken:
+          type: string
+          format: uuid
+    ErrorMessage:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          example: User not found!
+    AnnouncementsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/LossAnnouncement'
+    LossAnnouncement:
+      required:
+      - description
+      - geoPosition
+      - id
+      - imageUrl
+      - petType
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+          example: "12"
+        petType:
+          $ref: '#/components/schemas/PetTypes'
+        imageUrl:
+          type: string
+          format: url
+          example: https://firebasestorage.googleapis.com/v0/b/lost-pets-e8cae.appspot.com/o/IMG_4A981326FDC2-1.jpeg
+        title:
+          type: string
+          example: Strange pet here!
+        description:
+          type: string
+          example: I found a pet in here it's black hungry and angry.
+        geoPosition:
+          $ref: '#/components/schemas/GeoPosition'
+    PetTypes:
+      type: string
+      enum:
+      - dog
+      - cat
+      - other
+    GeoPosition:
+      required:
+      - lat
+      - lng
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          example: 38.8951
+        lng:
+          type: number
+          format: double
+          example: -77.0364
+      description: Geo Position of possibli lost pet
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

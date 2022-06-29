@@ -1,13 +1,14 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:lost_pets_app/auth/consts/ui_string_constants.dart';
 import 'package:lost_pets_app/auth/model/auth_screen_type.dart';
+import 'package:lost_pets_app/network_layer/network_service.dart';
 
 class AuthScreenState extends ChangeNotifier {
   AuthScreenType _screenType = AuthScreenType.login;
   AuthScreenType get screenType => _screenType;
-  RegExp _emailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+  final RegExp _emailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  final NetworkService _networkService;
 
   String _loginEmail = "";
   String _loginPassword = "";
@@ -34,6 +35,8 @@ class AuthScreenState extends ChangeNotifier {
 
   String _registerPasswordConfirmError = "";
   String get registerPasswordConfirmError => _registerPasswordConfirmError;
+
+  AuthScreenState(this._networkService);
 
   void toggleScreenType() {
     _screenType = _screenType == AuthScreenType.login 
@@ -67,6 +70,8 @@ class AuthScreenState extends ChangeNotifier {
   }
 
   void tryToRegister() {
+    _networkService.healthCheck();
+
     _registerNameError = _validateName(_registerName)
       ? ""
       : emptyFieldErrorText;
@@ -90,6 +95,8 @@ class AuthScreenState extends ChangeNotifier {
   }
 
   void tryToLogin() {
+    _networkService.healthCheck();
+
      _loginEmailError = _validateEmail(_loginEmail)
       ? ""
       : wrongEmailFormatErrorText;

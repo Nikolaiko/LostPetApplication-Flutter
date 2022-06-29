@@ -4,20 +4,6 @@ import 'package:lost_pets_app/consts/strings/button_titles.dart';
 import 'package:lost_pets_app/consts/ui/ui_color_consts.dart';
 import 'package:lost_pets_app/consts/ui/ui_fonts_consts.dart';
 
-const EdgeInsets authLogoPaddings = EdgeInsets.fromLTRB(
-  0,
-  logoTopPadding,
-  0,
-  logoBottomPadding
-);
-
-const EdgeInsets authSelectorPaddings = EdgeInsets.fromLTRB(
-  authViewSidePaddings, 
-  0, 
-  authViewSidePaddings, 
-  authSelectorBottomPaddings
-);
-
 const EdgeInsets authLoginWidgetPaddings = EdgeInsets.symmetric(horizontal: authViewSidePaddings);
 
 const Widget registerButton = Text(
@@ -38,9 +24,9 @@ const BoxDecoration authFieldDecoration = BoxDecoration(
   boxShadow: [
     BoxShadow(
       color: authTextFieldShadow,
-      blurRadius: 15,
-      spreadRadius: 2,
-      offset: Offset(0, 1),
+      blurRadius: 10,
+      spreadRadius: 0,
+      offset: Offset(0.0, 0.0),
     ),
   ]
 );

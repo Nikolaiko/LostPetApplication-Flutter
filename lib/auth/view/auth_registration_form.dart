@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lost_pets_app/auth/consts/ui_coff_constants.dart';
 import 'package:lost_pets_app/auth/state/auth_screen_state.dart';
 import 'package:lost_pets_app/auth/view/auth_text_field.dart';
 import 'package:lost_pets_app/common_widgets/blue_paw_button.dart';
 import 'package:lost_pets_app/consts/strings/button_titles.dart';
-import 'package:lost_pets_app/consts/ui/ui_paddings.dart';
+import 'package:lost_pets_app/utils/screen_dimensions.dart';
 
 class AuthRegistrationForm extends StatelessWidget {
   final AuthScreenState _state;
@@ -15,10 +16,11 @@ class AuthRegistrationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenDimensions _dimensions = ScreenDimensions(context);
     return Column(
       children: [
         Padding(
-          padding: bottom32Padding,
+          padding: EdgeInsets.only(bottom: _dimensions.height * authTextFieldBottomCoff),
           child: AuthTextField(
             authNameHint,
             _state.onRegisterNameChange,
@@ -28,7 +30,7 @@ class AuthRegistrationForm extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: bottom32Padding,
+          padding: EdgeInsets.only(bottom: _dimensions.height * authTextFieldBottomCoff),
           child: AuthTextField(
             authEmailHint,
             _state.onRegisterEmailChange,
@@ -38,7 +40,7 @@ class AuthRegistrationForm extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: bottom32Padding,
+          padding: EdgeInsets.only(bottom: _dimensions.height * authTextFieldBottomCoff),
           child: AuthTextField(
             authPasswordHint,
             _state.onRegisterPasswordChange,
@@ -48,7 +50,7 @@ class AuthRegistrationForm extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: bottom40Padding,
+          padding: EdgeInsets.only(bottom: _dimensions.height * authTextFieldBottomCoff),
           child: AuthTextField(
             authRepeatPasswordHint,
             _state.onRegisterPasswordConfirmChange,

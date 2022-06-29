@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:lost_pets_app/auth/auth_initial_flow.dart';
-import 'package:lost_pets_app/auth/view/auth_view.dart';
+import 'package:lost_pets_app/network_layer/network_service.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  GetIt.instance.registerSingleton<NetworkService>(NetworkService());
+
   runApp(const MyApp());
 }
 

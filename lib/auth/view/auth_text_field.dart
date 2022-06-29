@@ -24,6 +24,7 @@ class AuthTextField extends StatelessWidget {
     return Container(
       child: TextField(        
         decoration: InputDecoration(
+          isDense: true,      
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: _isError ? failedBorder : BorderSide.none
