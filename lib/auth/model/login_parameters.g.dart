@@ -8,12 +8,12 @@ part of 'login_parameters.dart';
 
 LoginParameters _$LoginParametersFromJson(Map<String, dynamic> json) =>
     LoginParameters(
-      json['login'] as String,
+      json['email'] as String,
       json['password'] as String,
     );
 
 Map<String, dynamic> _$LoginParametersToJson(LoginParameters instance) =>
     <String, dynamic>{
-      'login': instance.login,
+      'email': instance.login,
       'password': instance.password,
     };

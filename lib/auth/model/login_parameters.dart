@@ -4,7 +4,10 @@ part 'login_parameters.g.dart';
 
 @JsonSerializable()
 class LoginParameters {
+
+  @JsonKey(name: "email")
   final String login;
+
   final String password;
 
   LoginParameters(this.login, this.password);

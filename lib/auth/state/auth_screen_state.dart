@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lost_pets_app/auth/consts/ui_string_constants.dart';
 import 'package:lost_pets_app/auth/model/auth_screen_type.dart';
+import 'package:lost_pets_app/auth/model/login_parameters.dart';
 import 'package:lost_pets_app/network_layer/network_service.dart';
 
 class AuthScreenState extends ChangeNotifier {
@@ -70,8 +71,6 @@ class AuthScreenState extends ChangeNotifier {
   }
 
   void tryToRegister() {
-    _networkService.healthCheck();
-
     _registerNameError = _validateName(_registerName)
       ? ""
       : emptyFieldErrorText;
@@ -95,8 +94,6 @@ class AuthScreenState extends ChangeNotifier {
   }
 
   void tryToLogin() {
-    _networkService.healthCheck();
-
      _loginEmailError = _validateEmail(_loginEmail)
       ? ""
       : wrongEmailFormatErrorText;
@@ -104,6 +101,8 @@ class AuthScreenState extends ChangeNotifier {
     _loginPasswordError = _validatePassword(_loginPassword)
       ? ""
       : emptyFieldErrorText;
+
+    _networkService.login(LoginParameters(_loginEmail, _loginPassword));
 
     notifyListeners();
   }
