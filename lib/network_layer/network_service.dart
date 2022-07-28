@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class NetworkService {
-  final String _baseAddress = "http://pets.project.issart.com/api/1.0.0";
+  final String _baseAddress = "https://petsproject.issart.com/api/1.0.0";
   final int _timeOutSeconds = 5;
 
   Future<void> healthCheck() async {
