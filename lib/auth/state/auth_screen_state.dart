@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lost_pets_app/auth/consts/ui_string_constants.dart';
 import 'package:lost_pets_app/auth/model/auth_screen_type.dart';
+import 'package:lost_pets_app/auth/model/login_data.dart';
+import 'package:lost_pets_app/auth/model/request_result.dart';
+import 'package:lost_pets_app/auth/model/user_tokens.dart';
 import 'package:lost_pets_app/network_layer/network_service.dart';
+import 'package:lost_pets_app/repositories/local_storage.dart';
 
 class AuthScreenState extends ChangeNotifier {
   AuthScreenType _screenType = AuthScreenType.login;
@@ -9,6 +13,7 @@ class AuthScreenState extends ChangeNotifier {
 
   final RegExp _emailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final NetworkService _networkService;
+  final LocalStorage _storage;
 
   String _loginEmail = "";
   String _loginPassword = "";
@@ -36,7 +41,7 @@ class AuthScreenState extends ChangeNotifier {
   String _registerPasswordConfirmError = "";
   String get registerPasswordConfirmError => _registerPasswordConfirmError;
 
-  AuthScreenState(this._networkService);
+  AuthScreenState(this._networkService, this._storage);
 
   void toggleScreenType() {
     _screenType = _screenType == AuthScreenType.login 
@@ -70,8 +75,7 @@ class AuthScreenState extends ChangeNotifier {
   }
 
   void tryToRegister() {
-    _networkService.healthCheck();
-
+    
     _registerNameError = _validateName(_registerName)
       ? ""
       : emptyFieldErrorText;
@@ -94,9 +98,7 @@ class AuthScreenState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void tryToLogin() {
-    _networkService.healthCheck();
-
+  void tryToLogin() async {
      _loginEmailError = _validateEmail(_loginEmail)
       ? ""
       : wrongEmailFormatErrorText;
@@ -104,6 +106,11 @@ class AuthScreenState extends ChangeNotifier {
     _loginPasswordError = _validatePassword(_loginPassword)
       ? ""
       : emptyFieldErrorText;
+
+    RequestResult<UserTokens> _result = await _networkService.login(LoginData(_loginEmail, _loginPassword));
+    if (_result.success) {
+      _storage.saveTokens(_result.result!);
+    }
 
     notifyListeners();
   }
