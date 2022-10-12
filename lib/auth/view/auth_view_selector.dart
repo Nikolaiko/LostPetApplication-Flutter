@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lost_pets_app/auth/consts/ui_objects_constants.dart';
-import 'package:lost_pets_app/auth/model/auth_screen_type.dart';
+import 'package:lost_pets_app/model/auth/auth_screen_type.dart';
 import 'package:lost_pets_app/auth/state/auth_screen_state.dart';
 import 'package:lost_pets_app/consts/ui/ui_color_consts.dart';
 import 'package:provider/provider.dart';

@@ -15,3 +15,10 @@ ButtonStyle pawButtonMaterialStyle = ButtonStyle(
   padding: MaterialStateProperty.all<EdgeInsets>(pawButtonPadding),
   backgroundColor: MaterialStateProperty.all<Color>(mainBlue)
 );
+
+const TextStyle topTitlesStyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  fontFamily: fontFamilyName,
+  color: mainWhite
+);

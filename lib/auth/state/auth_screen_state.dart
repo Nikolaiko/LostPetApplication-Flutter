@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lost_pets_app/auth/consts/ui_string_constants.dart';
-import 'package:lost_pets_app/auth/model/auth_screen_type.dart';
-import 'package:lost_pets_app/auth/model/login_data.dart';
-import 'package:lost_pets_app/auth/model/request_result.dart';
-import 'package:lost_pets_app/auth/model/user_tokens.dart';
+import 'package:lost_pets_app/model/auth/auth_screen_type.dart';
+import 'package:lost_pets_app/model/auth/login_data.dart';
+import 'package:lost_pets_app/model/auth/registration_data.dart';
+import 'package:lost_pets_app/model/network_data/request_result.dart';
+import 'package:lost_pets_app/model/network_data/user_tokens.dart';
+import 'package:lost_pets_app/auth/state/auth_app_state.dart';
 import 'package:lost_pets_app/network_layer/network_service.dart';
 import 'package:lost_pets_app/repositories/local_storage.dart';
 
@@ -14,6 +16,7 @@ class AuthScreenState extends ChangeNotifier {
   final RegExp _emailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final NetworkService _networkService;
   final LocalStorage _storage;
+  final AuthAppState _authAppState;
 
   String _loginEmail = "";
   String _loginPassword = "";
@@ -41,7 +44,7 @@ class AuthScreenState extends ChangeNotifier {
   String _registerPasswordConfirmError = "";
   String get registerPasswordConfirmError => _registerPasswordConfirmError;
 
-  AuthScreenState(this._networkService, this._storage);
+  AuthScreenState(this._networkService, this._storage, this._authAppState);
 
   void toggleScreenType() {
     _screenType = _screenType == AuthScreenType.login 
@@ -74,7 +77,13 @@ class AuthScreenState extends ChangeNotifier {
     _registerPasswordConfirm = passwordValue;
   }
 
-  void tryToRegister() {
+  void skipLogin() {
+    print("Saved");
+    _storage.setSkippedLogin();
+    _authAppState.updateState();
+  }
+
+  void tryToRegister() async {
     
     _registerNameError = _validateName(_registerName)
       ? ""
@@ -95,6 +104,20 @@ class AuthScreenState extends ChangeNotifier {
     if (_registerPassword != _registerPasswordConfirm) {
       _registerPasswordConfirmError = notEqualPasswordsErrorText;
     }
+
+    RequestResult<UserTokens> _result = await _networkService.register(
+      RegistrationData(
+        _registerEmail, 
+        _registerPassword,
+        _registerEmail
+      )
+    );
+
+    if (_result.success) {
+      _storage.saveTokens(_result.result!);
+      _authAppState.updateState();
+    }
+
     notifyListeners();
   }
 
@@ -110,6 +133,7 @@ class AuthScreenState extends ChangeNotifier {
     RequestResult<UserTokens> _result = await _networkService.login(LoginData(_loginEmail, _loginPassword));
     if (_result.success) {
       _storage.saveTokens(_result.result!);
+      _authAppState.updateState();
     }
 
     notifyListeners();

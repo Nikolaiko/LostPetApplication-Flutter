@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lost_pets_app/auth/model/auth_screen_type.dart';
+import 'package:lost_pets_app/model/auth/auth_screen_type.dart';
 import 'package:lost_pets_app/auth/state/auth_screen_state.dart';
 import 'package:lost_pets_app/auth/view/auth_login_form.dart';
 import 'package:lost_pets_app/auth/view/auth_registration_form.dart';
@@ -70,11 +70,15 @@ class _AuthViewState extends State<AuthView> {
               );
             }
           ),
-          const Spacer(),                           
-          TextButton(
-            onPressed: (){},
-            child: const Text(laterLoginTitle, style: forgotPasswordButtonStyle)
-          )
+          const Spacer(),
+          Consumer<AuthScreenState>(
+            builder: ((context, value, child) {
+              return TextButton(
+                onPressed: () => value.skipLogin(),
+                child: const Text(laterLoginTitle, style: forgotPasswordButtonStyle)
+              );    
+            })
+          )           
         ]
       )
     );

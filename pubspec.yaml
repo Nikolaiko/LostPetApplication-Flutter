@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  flutter_svg: ^1.1.0
+  flutter_svg: ^1.1.5
 
   provider: ^6.0.3
   get_it: ^7.2.0
@@ -23,9 +23,16 @@ dependencies:
 
   shared_preferences: ^2.0.15
 
+  routemaster: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  integration_test:
+    sdk: flutter              
+
+  test: ^1.14.4   
 
   flutter_lints: ^1.0.0
   build_runner: ^2.2.0
@@ -35,6 +42,7 @@ flutter:
 
   assets:
     - images/
+    - images/bottom_bar/
 
   fonts:
     - family: Mulish
